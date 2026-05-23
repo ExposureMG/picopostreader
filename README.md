@@ -19,3 +19,5 @@ I need to debug gxBuild images and id rather not manually read the post bits wit
 Licensed under the GNU General Public License 2.0 or Later
 
 Cheers to tuxuser for his PIO suggestion
+
+Cheers to erorn for his serial buffer speed suggestion

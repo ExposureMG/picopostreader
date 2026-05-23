@@ -7,6 +7,7 @@ use embassy_rp::bind_interrupts;
 use embassy_rp::gpio::Pull;
 use embassy_rp::peripherals::{PIO0, USB};
 use embassy_rp::pio::{Direction as PioDirection, FifoJoin, Pio, ShiftDirection};
+use embassy_time::{with_timeout, Duration};
 use embassy_usb::class::cdc_acm::{CdcAcmClass, State};
 use embassy_usb::{Builder, Config};
 use pio::pio_asm;
@@ -125,11 +126,28 @@ async fn main(spawner: Spawner) {
     let rx = sm.rx();
     loop {
         cdc.wait_connection().await;
+
+        let mut last_sent = 0xFFu8;
         loop {
-            let word = rx.wait_pull().await;
-            let post = (word & 0xFF) as u8;
-            if cdc.write_packet(&[post]).await.is_err() {
-                break;
+            let mut latest: Option<u8> = None;
+
+            while let Some(word) = rx.try_pull() {
+                latest = Some((word & 0xFF) as u8);
+            }
+
+            let post = match latest {
+                Some(v) => v,
+                None => (rx.wait_pull().await & 0xFF) as u8,
+            };
+
+            if post == last_sent {
+                continue;
+            }
+
+            match with_timeout(Duration::from_millis(20), cdc.write_packet(&[post])).await {
+                Ok(Ok(())) => last_sent = post,
+                Ok(Err(_)) => break,
+                Err(_) => {}
             }
         }
     }
