@@ -1,0 +1,16 @@
+[package]
+name = "picopostreader"
+version = "0.0.1"
+edition = "2021"
+
+[dependencies]
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+embassy-executor = { version = "0.7", features = ["arch-cortex-m", "executor-thread"] }
+embassy-rp = { version = "0.4", features = ["rp2040", "time-driver", "critical-section-impl"] }
+embassy-time = "0.4"
+embassy-usb = "0.4"
+panic-halt = "0.2"
+portable-atomic = { version = "1", features = ["critical-section"] }
+pio = "0.3"
+static_cell = "2"
