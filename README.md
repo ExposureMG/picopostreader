@@ -1,8 +1,12 @@
 # picopostreader
 
+# UNFINISHED!
+
 Stop-gap solution to read xbox 360 POST codes with a Pi Pico PIO.
 
 Uses GPIO 0-7, connect directly to post bits 0-7.
+
+Includes an example reading script in python for Linux and Windows
 
 
 ## Background
