@@ -2,6 +2,10 @@
 
 # UNFINISHED!
 
+Doesnt really work because of the low xbox 360 voltage. might just trigger on slims but never triggers on phats
+
+---
+
 Stop-gap solution to read xbox 360 POST codes with a Pi Pico PIO.
 
 Uses GPIO 0-7, connect directly to post bits 0-7.
